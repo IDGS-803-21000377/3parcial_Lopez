@@ -1,0 +1,142 @@
+{% extends "layout.html" %}
+{% import "_macros.html" as macros %}
+
+{% block container %}
+
+<div class="container gap-6 p-6 mx-auto p-6"> 
+    <form action="/pedido" method="POST" class="bg-gray-200 p-6 rounded-lg shadow-lg mb-6">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="grid grid-cols-3 gap-4 mb-4">
+            <div>
+                <label class="block font-bold">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" class="border rounded p-2 w-full" required>
+            </div>
+            <div>
+                <label class="block font-bold">Dirección:</label>
+                <input type="text" id="direccion" name="direccion" class="border rounded p-2 w-full" required>
+            </div>
+            <div>
+                <label class="block font-bold">Teléfono:</label>
+                <input type="text" id="telefono" name="telefono" class="border rounded p-2 w-full" required>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            <fieldset class="border p-4 rounded">
+                <legend class="font-bold">Tamaño Pizza</legend>
+                <label class="block"><input type="radio" name="size" value="chica" required> Chica $40</label>
+                <label class="block"><input type="radio" name="size" value="mediana"> Mediana $80</label>
+                <label class="block"><input type="radio" name="size" value="grande"> Grande $120</label>
+            </fieldset>
+            <fieldset class="border p-4 rounded">
+                <legend class="font-bold">Ingredientes (+$10 c/u)</legend>
+                <label class="block"><input type="checkbox" name="ingredientes" value="jamon"> Jamón</label>
+                <label class="block"><input type="checkbox" name="ingredientes" value="piña"> Piña</label>
+                <label class="block"><input type="checkbox" name="ingredientes" value="champiñones"> Champiñones</label>
+            </fieldset>
+        </div>
+
+        <div class="flex items-center mb-4">
+            <label class="block mr-2 font-bold">Num. de Pizzas:</label>
+            <input type="number" name="num_pizzas" min="1" class="border rounded p-7 w-16" required>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded ml-4 hover:bg-blue-600 transition">Agregar</button>
+        </div>
+    </form>
+
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+        <div class="overflow-x-auto max-h-96">
+            <table class="w-full text-sm text-left text-gray-700">
+                <thead class="text-xs text-white uppercase bg-gray-700">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Tamaño</th>
+                        <th scope="col" class="px-6 py-3">Ingredientes</th>
+                        <th scope="col" class="px-6 py-3">Num pizzas</th>
+                        <th scope="col" class="px-6 py-3">Subtotal</th>
+                        <th scope="col" class="px-6 py-3">acciones</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for venta in ventas %}
+                    <tr class="bg-gray-100 border-b">
+                        <td class="px-6 py-4">{{ venta.size }}</td>
+                        <td class="px-6 py-4">{{ venta.ingredientes }}</td>
+                        <td class="px-6 py-4">{{ venta.num_pizzas }}</td>
+                        <td class="px-6 py-4">${{ venta.subtotal }}</td>
+                        <td class="px-6 py-4">
+                            <form action="{{ url_for('quitar_pedido', id_venta=venta.idVenta) }}" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Quitar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+
+        
+        <div class="flex justify-between mt-4">
+            <form action="{{ url_for('terminar_pedido') }}" method="POST">
+         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+         <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Terminar</button>
+        </form>
+         </div>
+    </div>
+</div>
+
+
+<a href="#" class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-sm md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+    <div class="flex flex-col justify-between p-4 leading-normal">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Ventas del día</h5>
+        <form method="POST" action="{{ url_for('ventas_totales') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-primary">Obtener ventas totales</button>
+        </form>
+
+       {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      {% if category == 'success' %}
+        <div class="alert alert-success mt-3">
+          <strong>Ventas Totales del Día: </strong>{{ message['ventas_totales'] }}
+          <h5 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">Ventas por Cliente:</h5>
+          <ul class="mt-2 text-gray-700 dark:text-gray-300">
+            {% for venta in message['ventas_por_cliente'] %}
+              <li>{{ venta.cliente }}: ${{ venta.subtotal }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% elif category == 'error' %}
+        <div class="alert alert-danger mt-3">
+          <strong>Error: </strong>{{ message['mensaje_error'] }}
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+
+    </div>
+</a>
+
+
+
+
+
+
+{% endblock %}

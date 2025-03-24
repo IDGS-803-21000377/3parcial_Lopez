@@ -1,0 +1,22 @@
+{"idVenta": 27, "ingredientes": "pi\u00f1a", "num_pizzas": 5, "size": "chica", "subtotal": 250.0}
+{"idVenta": 23, "ingredientes": "jamon", "num_pizzas": 2, "size": "chica", "subtotal": 100.0}
+{"idVenta": 26, "ingredientes": "pi\u00f1a", "num_pizzas": 3, "size": "mediana", "subtotal": 270.0}
+{"idVenta": 28, "ingredientes": "jamon", "num_pizzas": 3, "size": "chica", "subtotal": 150.0}
+{"idVenta": 25, "ingredientes": "jamon", "num_pizzas": 3, "size": "mediana", "subtotal": 270.0}
+{"idVenta": 29, "ingredientes": "champi\u00f1ones", "num_pizzas": 5, "size": "chica", "subtotal": 250.0}
+{"idVenta": 31, "ingredientes": "champi\u00f1ones", "num_pizzas": 4, "size": "chica", "subtotal": 200.0}
+{"idVenta": 33, "ingredientes": "pi\u00f1a", "num_pizzas": 6, "size": "chica", "subtotal": 300.0}
+{"idVenta": 32, "ingredientes": "pi\u00f1a", "num_pizzas": 5, "size": "chica", "subtotal": 250.0}
+{"idVenta": 35, "ingredientes": "jamon, pi\u00f1a, champi\u00f1ones", "num_pizzas": 3, "size": "chica", "subtotal": 210.0}
+{"idVenta": 34, "ingredientes": "jamon", "num_pizzas": 2, "size": "chica", "subtotal": 100.0}
+{"idVenta": 37, "ingredientes": "jamon, pi\u00f1a", "num_pizzas": 7, "size": "mediana", "subtotal": 700.0}
+{"idVenta": 36, "ingredientes": "jamon, pi\u00f1a", "num_pizzas": 5, "size": "chica", "subtotal": 300.0}
+{"idVenta": 38, "ingredientes": "pi\u00f1a, champi\u00f1ones", "num_pizzas": 9, "size": "chica", "subtotal": 540.0}
+{"idVenta": 41, "ingredientes": "jamon, pi\u00f1a", "num_pizzas": 2, "size": "chica", "subtotal": 120.0}
+{"idVenta": 40, "ingredientes": "jamon, pi\u00f1a", "num_pizzas": 1, "size": "chica", "subtotal": 60.0}
+{"idVenta": 39, "ingredientes": "pi\u00f1a", "num_pizzas": 3, "size": "chica", "subtotal": 150.0}
+{"idVenta": 42, "ingredientes": "jamon", "num_pizzas": 2, "size": "chica", "subtotal": 100.0}
+{"idVenta": 44, "ingredientes": "jamon, pi\u00f1a", "num_pizzas": 4, "size": "chica", "subtotal": 240.0}
+{"idVenta": 43, "ingredientes": "jamon, pi\u00f1a, champi\u00f1ones", "num_pizzas": 2, "size": "chica", "subtotal": 140.0}
+{"idVenta": 45, "ingredientes": "pi\u00f1a, champi\u00f1ones", "num_pizzas": 4, "size": "chica", "subtotal": 240.0}
+{"idVenta": 30, "ingredientes": "champi\u00f1ones", "num_pizzas": 2, "size": "chica", "subtotal": 100.0}
