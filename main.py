@@ -1,7 +1,7 @@
 from datetime import date
 from hashlib import scrypt
 import os
-from flask import Flask, flash, get_flashed_messages, json, render_template, request, redirect, url_for
+from flask import Flask, flash, json, render_template, request, redirect, url_for
 from werkzeug.security import check_password_hash
 from flask_login import LoginManager, login_manager, login_required, login_user, logout_user
 from flask_wtf.csrf import CSRFProtect
@@ -15,11 +15,9 @@ from flask import redirect, url_for, flash
 app = Flask(__name__)
 app.config.from_object(DevelomentConfig)
 csrf = CSRFProtect(app)
-
 login_manager = LoginManager()
+login_manager.login_view = 'login'  
 login_manager.init_app(app)
-login_manager.login_view = "login" 
-login_manager.login_message = "Por favor, inicia sesión primero."
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -58,11 +56,7 @@ def login():
             print(user)
 
     return render_template('login.html', form=form)
-@app.route('/test_flash')
-def test_flash():
-    flash("Prueba de mensaje", "info")
-    print(get_flashed_messages())  
-    return redirect(url_for("index"))
+
 
 
 @app.route("/logout")
@@ -71,7 +65,6 @@ def logout():
     logout_user()
     flash("Sesión cerrada correctamente.", "info")
     return redirect(url_for('login'))
-
 @app.route('/ventas')
 def detalles_venta():
     ventas = Venta.query.all()
