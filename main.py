@@ -2,15 +2,19 @@ from datetime import date
 from hashlib import scrypt
 import os
 from flask import Flask, flash, json, render_template, request, redirect, url_for
-from werkzeug.security import check_password_hash
+import bcrypt
+from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import LoginManager, login_manager, login_required, login_user, logout_user
 from flask_wtf.csrf import CSRFProtect
 from sqlalchemy import func
 from wtforms.fields import datetime
 from models import Pedidos, User, Venta, db, Cliente
+from forms import RegistrationForm  
 from config import DevelomentConfig
 import forms
 from flask import redirect, url_for, flash
+from datetime import datetime
+
 
 app = Flask(__name__)
 app.config.from_object(DevelomentConfig)
@@ -21,7 +25,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+   return db.session.get(User, int(user_id)) 
 
     
 
@@ -113,6 +117,22 @@ def pedido():
 
     return render_template('index.html')
 
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    form = RegistrationForm()
+
+    if form.validate_on_submit():
+     
+
+        new_user = User(username=form.username.data, email=form.email.data, password=form.password.data)
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash('¡Te has registrado correctamente!', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('registro.html', form=form)
+
 
 
 @app.route('/quitar_pedido/<int:id_venta>', methods=['POST'])
@@ -181,6 +201,52 @@ def ventas_totales():
     except Exception as e:
         flash({'mensaje_error': f"Error al obtener ventas totales: {str(e)}"}, 'error')
         return redirect(url_for('index'))
+@app.route("/buscar_ventas", methods=["POST"])
+def buscar_ventas():
+    try:
+        tipo_busqueda = request.form.get("tipo_busqueda") 
+        fecha_str = request.form.get("fecha")
+
+        if not fecha_str:
+            flash({'mensaje_error': "Debe seleccionar una fecha"}, 'error')
+            return redirect(url_for('index'))
+
+        fecha = datetime.strptime(fecha_str, "%Y-%m-%d").date()  
+
+        if tipo_busqueda == "dia":
+            pedidos = Pedidos.query.filter(db.func.date(Pedidos.fechaPedido) == fecha).all()
+        elif tipo_busqueda == "mes":
+            pedidos = Pedidos.query.filter(
+                db.extract("year", Pedidos.fechaPedido) == fecha.year,
+                db.extract("month", Pedidos.fechaPedido) == fecha.month
+            ).all()
+        else:
+            flash({'mensaje_error': "Tipo de búsqueda no válido"}, 'error')
+            return redirect(url_for('index'))
+
+        total = 0
+        ventas_por_cliente = []
+
+        for pedido in pedidos:
+            if pedido.ventas:
+                subtotal = sum(venta.montoTotal for venta in pedido.ventas)
+                total += subtotal
+                ventas_por_cliente.append({
+                    'cliente': pedido.cliente.nombre,
+                    'subtotal': subtotal
+                })
+
+        mensaje_ventas = f"${total:.2f}" if total > 0 else "$0.00"
+
+        flash({'ventas_totales': mensaje_ventas, 'ventas_por_cliente': ventas_por_cliente}, 'success')
+
+    except ValueError:
+        flash({'mensaje_error': "Formato de fecha inválido. Use el formato YYYY-MM-DD"}, 'error')
+    except Exception as e:
+        flash({'mensaje_error': f"Error al buscar ventas: {str(e)}"}, 'error')
+
+    return redirect(url_for('index'))
+
 
 
 

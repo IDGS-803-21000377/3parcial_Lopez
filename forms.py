@@ -5,6 +5,10 @@ from wtforms import StringField,IntegerField
 from wtforms import EmailField
 from wtforms import validators
 from wtforms.fields import PasswordField
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired, Email, Length, EqualTo, InputRequired
+
  
 class UserForm(Form):
     nombre = StringField('Nombre', [
@@ -55,3 +59,8 @@ class VentaForm(FlaskForm):
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[validators.DataRequired(), validators.Length(min=4, max=20)])
     password = PasswordField('Password', validators=[validators.DataRequired(), validators.Length(min=4, max=20)])
+class RegistrationForm(FlaskForm):
+    username = StringField('Nombre de Usuario', validators=[InputRequired(), Length(min=4, max=20)])
+    email = StringField('Correo Electrónico', validators=[InputRequired(), Email()])
+    password = PasswordField('Contraseña', validators=[InputRequired(), Length(min=6)])
+    confirm_password = PasswordField('Confirmar Contraseña', validators=[InputRequired(), EqualTo('password')])

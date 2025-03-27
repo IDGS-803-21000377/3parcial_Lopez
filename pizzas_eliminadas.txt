@@ -20,3 +20,6 @@
 {"idVenta": 43, "ingredientes": "jamon, pi\u00f1a, champi\u00f1ones", "num_pizzas": 2, "size": "chica", "subtotal": 140.0}
 {"idVenta": 45, "ingredientes": "pi\u00f1a, champi\u00f1ones", "num_pizzas": 4, "size": "chica", "subtotal": 240.0}
 {"idVenta": 30, "ingredientes": "champi\u00f1ones", "num_pizzas": 2, "size": "chica", "subtotal": 100.0}
+{"idVenta": 48, "ingredientes": "", "num_pizzas": 427, "size": "chica", "subtotal": 17080.0}
+{"idVenta": 47, "ingredientes": "", "num_pizzas": 426, "size": "chica", "subtotal": 17040.0}
+{"idVenta": 49, "ingredientes": "jamon", "num_pizzas": 427, "size": "chica", "subtotal": 21350.0}

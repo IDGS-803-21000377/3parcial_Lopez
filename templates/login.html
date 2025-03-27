@@ -24,18 +24,24 @@
             {% endwith %}
 
             <form method="POST" action="{{ url_for('login') }}">
-                {{ form.hidden_tag() }}  
+                {{ form.hidden_tag() }}
 
                 <div class="mb-4">
                     <label for="username" class="block text-gray-700 font-medium mb-2">Usuario</label>
                     {{ form.username(class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none", placeholder="Ingresa tu usuario") }}
                 </div>
+
                 <div class="mb-4">
                     <label for="password" class="block text-gray-700 font-medium mb-2">Contraseña</label>
                     {{ form.password(class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none", placeholder="Ingresa tu contraseña") }}
                 </div>
+
                 <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition duration-200">Ingresar</button>
             </form>
+
+            <div class="mt-4 text-center">
+                <p class="text-sm">¿No tienes una cuenta? <a href="{{ url_for('register') }}" class="text-blue-500 hover:text-blue-700">Registrarse</a></p>
+            </div>
         </div>
     </div>
 
